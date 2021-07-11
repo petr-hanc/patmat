@@ -13,7 +13,7 @@
           <div class="col-lg-8 col-md-7 col-sm-6">
             <h1>Dárce</h1>
             
-            <form class="form-horizontal" action="#" th:action="@{/donors/edited/{id}(id=${donor.id})}" th:object="${donor}" method="post">
+            <form class="form-horizontal" action="#" th:action="@{/donors/edit/{id}(id=${donor.id})}" th:object="${donor}" method="post">
             	<fieldset>
             		<div class="form-group">
 	                    <label class="col-lg-3 control-label">Křestní jméno</label>
