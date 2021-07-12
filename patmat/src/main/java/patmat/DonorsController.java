@@ -1,5 +1,7 @@
 package patmat;
 
+import java.time.LocalDate;
+
 import javax.validation.Valid;
 
 // import java.util.List;
@@ -30,6 +32,36 @@ public class DonorsController {
         model.addAttribute("donors", repository.findAll());
         return "donors";
 	}
+    
+    @GetMapping("{id}")
+	public String showDonor(@PathVariable long id, Model model) {
+    	Donor donor = repository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid donor Id:" + id));
+        model.addAttribute("donor", donor);
+        model.addAttribute("donations", donor.getDonations());
+        return "donor";
+    }    
+    
+    @PostMapping("{id}")
+	public String addDonation(@PathVariable Long id, @RequestParam String date, 
+			@RequestParam long amount, @RequestParam String message, Model model) {
+    	Donation newDonation = new Donation(LocalDate.parse(date), amount, message);
+    	
+    	Donor donor = repository.findById(id)
+    			.orElseThrow(() -> new IllegalArgumentException("Invalid donor Id:" + id));
+
+    	if (donor != null) {
+    		donationRepository.save(newDonation);
+    		donor.getDonations().add(newDonation);
+    		repository.save(donor);
+            model.addAttribute("donor", repository.findById(id));
+            model.addAttribute("donations", donor.getDonations());
+            return "redirect:/donors/" + donor.getId();
+    	}
+
+        model.addAttribute("donors", repository.findAll());
+        return "redirect:/donors/";
+    }
 
     @PostMapping()
 	public String addDonor(@RequestParam String town, 
@@ -72,15 +104,8 @@ public class DonorsController {
     	repository.save(donor);
         model.addAttribute("donors", repository.findAll());
         return "donors";         
-	}       
+	}  
+    
+
        
-        
-	@GetMapping("{id}")
-	public String showDonor(@PathVariable long id, Model model) {
-    	Donor donor = repository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid donor Id:" + id));
-        model.addAttribute("donor", donor);
-        model.addAttribute("donations", donor.getDonations());
-        return "donor";
-	}    
 }

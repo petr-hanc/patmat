@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
+@RequestMapping("/donations/")
 public class DonationsController {
 	
 	@Autowired
@@ -23,38 +24,19 @@ public class DonationsController {
 	DonationRepository donationRepository;
 
 
-    @RequestMapping(value="/donor/{id}/donations", method=RequestMethod.POST)
-	public String donorAddDonation(@PathVariable Long id, @RequestParam String date, 
-			@RequestParam long amount, @RequestParam String message, Model model) {
-    	Donation newDonation = new Donation(LocalDate.parse(date), amount, message);
-    	
-    	Donor donor = repository.findById(id)
-    			.orElseThrow(() -> new IllegalArgumentException("Invalid donor Id:" + id));
 
-    	if (donor != null) {
-    		donationRepository.save(newDonation);
-    		donor.getDonations().add(newDonation);
-    		repository.save(donor);
-            model.addAttribute("donor", repository.findById(id));
-            model.addAttribute("donations", donor.getDonations());
-            return "redirect:/donor/" + donor.getId();
-    	}
-
-        model.addAttribute("donors", repository.findAll());
-        return "redirect:/donors";
-    }
     
-        @RequestMapping(value="donations/del/{id}",method=RequestMethod.GET)
+        @RequestMapping(value="del/{id}",method=RequestMethod.GET)
     	public String deleteDonation (@PathVariable("id") long id, Model model) {
         	Donation donation = donationRepository.findById(id)
                     .orElseThrow(() -> new IllegalArgumentException("Invalid donation Id:" + id));
         	Donor donor = donation.getDonor();
         	donationRepository.delete(donation);
             model.addAttribute("donors", repository.findAll());  
-            return "redirect:/donor/" + donor.getId();
+            return "redirect:/donors/" + donor.getId();
     	} 
         
-        @RequestMapping(value="donations/edit/{id}",method=RequestMethod.GET)
+        @RequestMapping(value="edit/{id}",method=RequestMethod.GET)
     	public String editDonation (@PathVariable("id") long id, Model model) {
         	Donation donation = donationRepository.findById(id)
                     .orElseThrow(() -> new IllegalArgumentException("Invalid donation Id:" + id));
@@ -64,7 +46,7 @@ public class DonationsController {
             return "edit-donation";
         }
         
-        @RequestMapping(value="/donations/edited/{id}",method=RequestMethod.POST)
+        @RequestMapping(value="edited/{id}",method=RequestMethod.POST)
     	public String donationEdited (@PathVariable("id") long id, @Valid Donation donation, BindingResult result, Model model) {
         	/* donation = donationRepository.findById(id)
                     .orElseThrow(() -> new IllegalArgumentException("Invalid donation Id:" + id)); */
@@ -78,6 +60,6 @@ public class DonationsController {
             //model.addAttribute("donor", donor);
             //model.addAttribute("donor", repository.findById(id));
             //model.addAttribute("donations", donor.getDonations());
-            return "redirect:/donors";    
+            return "redirect:/donors/";    
     	}  
 }

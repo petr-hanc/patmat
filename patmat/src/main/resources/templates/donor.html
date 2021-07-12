@@ -68,12 +68,12 @@
 				</table>
 			</div>
 			<div class="row">
-			<tr><a th:href="@{/donors}">Zpět na seznam dárců</a> </tr>
+			<tr><a th:href="@{/donors/}">Zpět na seznam dárců</a> </tr>
 			</div>
 			<div class="row">
 				<div class="col-lg-6 col-md-5 col-sm-4">
 					<h3>Přidat dar</h3>
-					<form th:action="@{/donor/{id}/donations(id=${donor.id})}" method="post"
+					<form th:action="@{/donors/{id}(id=${donor.id})}" method="post"
 						enctype="multipart/form-data" class="form-horizontal">
 						<fieldset>
 							<div class="form-group">
