@@ -6,16 +6,17 @@ import javax.validation.Valid;
 // import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.springframework.stereotype.Controller;
-
 @Controller
+@RequestMapping("/donors/")
 public class DonorsController {
 
 	@Autowired
@@ -24,14 +25,14 @@ public class DonorsController {
 	@Autowired
 	DonationRepository donationRepository;
 
-    @RequestMapping(value="/donors",method=RequestMethod.GET)
-	public String donorsList(Model model) {
+    @GetMapping("")
+	public String showDonorsList(Model model) {
         model.addAttribute("donors", repository.findAll());
         return "donors";
 	}
 
-    @RequestMapping(value="/donors",method=RequestMethod.POST)
-	public String donorsAdd(@RequestParam String town, 
+    @PostMapping()
+	public String addDonor(@RequestParam String town, 
 						@RequestParam String firstName, @RequestParam String lastName, Model model) {
         Donor newDonor = new Donor();
         newDonor.setTown(town);
@@ -44,7 +45,7 @@ public class DonorsController {
         return "redirect:/donor/" + newDonor.getId();
 	}
 
-    @RequestMapping(value="/donors/del/{id}",method=RequestMethod.GET)
+    @GetMapping("del/{id}")
 	public String deleteDonor (@PathVariable("id") long id, Model model) {
     	Donor donor = repository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid donor Id:" + id));
@@ -53,7 +54,7 @@ public class DonorsController {
         return "donors";            
 	}  
     
-    @RequestMapping(value="/donors/edit/{id}",method=RequestMethod.GET)
+    @GetMapping("edit/{id}")
 	public String showEditDonorForm (@PathVariable("id") long id, Model model) {
     	Donor donor = repository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid donor Id:" + id));
@@ -61,8 +62,8 @@ public class DonorsController {
         return "edit-donor";         
 	}   
     
-    @RequestMapping(value="/donors/edit/{id}",method=RequestMethod.POST)
-	public String donorEdited (@PathVariable("id") long id, @Valid Donor donor, BindingResult result, Model model) {
+    @PostMapping("edit/{id}")
+	public String editDonor (@PathVariable("id") long id, @Valid Donor donor, BindingResult result, Model model) {
     	if (result.hasErrors()) {
             donor.setId(id);
             return "edit-donor";
@@ -74,7 +75,7 @@ public class DonorsController {
 	}       
        
         
-	@RequestMapping(value="/donors/{id}", method=RequestMethod.GET)
+	@GetMapping("{id}")
 	public String showDonor(@PathVariable long id, Model model) {
     	Donor donor = repository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid donor Id:" + id));
