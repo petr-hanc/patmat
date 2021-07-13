@@ -33,6 +33,20 @@ public class DonorsController {
         return "donors";
 	}
     
+    @PostMapping
+	public String addDonor(@RequestParam String town, 
+						@RequestParam String firstName, @RequestParam String lastName, Model model) {
+        Donor newDonor = new Donor();
+        newDonor.setTown(town);
+        newDonor.setFirstName(firstName);
+        newDonor.setLastName(lastName);
+        repository.save(newDonor);
+
+        model.addAttribute("donor", newDonor);
+        model.addAttribute("donations", donationRepository.findAll());
+        return "redirect:/donor/" + newDonor.getId();
+	}
+    
     @GetMapping("{id}")
 	public String showDonor(@PathVariable long id, Model model) {
     	Donor donor = repository.findById(id)
@@ -62,20 +76,6 @@ public class DonorsController {
         model.addAttribute("donors", repository.findAll());
         return "redirect:/donors/";
     }
-
-    @PostMapping
-	public String addDonor(@RequestParam String town, 
-						@RequestParam String firstName, @RequestParam String lastName, Model model) {
-        Donor newDonor = new Donor();
-        newDonor.setTown(town);
-        newDonor.setFirstName(firstName);
-        newDonor.setLastName(lastName);
-        repository.save(newDonor);
-
-        model.addAttribute("donor", newDonor);
-        model.addAttribute("donations", donationRepository.findAll());
-        return "redirect:/donor/" + newDonor.getId();
-	}
 
     @GetMapping("del/{id}")
 	public String deleteDonor (@PathVariable("id") long id, Model model) {
