@@ -27,7 +27,7 @@ public class DonorsController {
 	@Autowired
 	DonationRepository donationRepository;
 
-    @GetMapping("")
+    @GetMapping
 	public String showDonorsList(Model model) {
         model.addAttribute("donors", repository.findAll());
         return "donors";
@@ -63,7 +63,7 @@ public class DonorsController {
         return "redirect:/donors/";
     }
 
-    @PostMapping()
+    @PostMapping
 	public String addDonor(@RequestParam String town, 
 						@RequestParam String firstName, @RequestParam String lastName, Model model) {
         Donor newDonor = new Donor();
