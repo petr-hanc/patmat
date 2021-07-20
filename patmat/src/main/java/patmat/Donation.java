@@ -23,5 +23,16 @@ public class Donation {
 		this.amount = amount;
 		this.message = message;
 	}
+    
+	public Donation(long id, LocalDate createdOn, Donor donor, LocalDate date, long amount, String message) {
+		super();
+		this.id = id;
+		this.createdOn = createdOn;
+		this.donor = donor;
+		this.date = date;
+		this.amount = amount;
+		this.message = message;
+	}
 
+    
 }
