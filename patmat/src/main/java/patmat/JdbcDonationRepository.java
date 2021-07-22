@@ -26,7 +26,7 @@ public class JdbcDonationRepository implements DonationRepository {
 	}
 	
 	@Override
-	public Donation findOne(long id) {
+	public Donation findById(long id) {
 		return jdbc.queryForObject("select id, created_on, donor_id, date, amount, message from donations where id=?",
 				this::mapRowToDonation, id);
 	}

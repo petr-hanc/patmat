@@ -9,6 +9,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface DonationRepository {
 	List<Donation> findAll();
-	Donation findOne(long id);
+	Donation findById(long id);
 	Donation save(Donation donation);
 }
