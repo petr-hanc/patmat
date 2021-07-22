@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 public class Donation {
-	private long id;
+	private Long donatId;
     private LocalDate createdOn;
     private Donor donor;
     private LocalDate date;
@@ -16,17 +16,18 @@ public class Donation {
     public Donation() {
 		super();
     }
-    
+/*    
     public Donation(LocalDate date, long amount, String message) {
 		super();
 		this.date = date;
 		this.amount = amount;
 		this.message = message;
 	}
+*/
     
-	public Donation(long id, LocalDate createdOn, Donor donor, LocalDate date, long amount, String message) {
+	public Donation(Long donatId, LocalDate createdOn, Donor donor, LocalDate date, long amount, String message) {
 		super();
-		this.id = id;
+		this.donatId = donatId;
 		this.createdOn = createdOn;
 		this.donor = donor;
 		this.date = date;

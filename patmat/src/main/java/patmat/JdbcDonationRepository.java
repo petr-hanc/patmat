@@ -35,14 +35,14 @@ public class JdbcDonationRepository implements DonationRepository {
 
 class DonationMapper implements RowMapper<Donation> {
 	public Donation mapRow(ResultSet rs, int rowNum) throws SQLException {
-		LocalDate x;
-	return new Donation(
-			rs.getLong("id"),
-			rs.getDate("created_on").toLocalDate(),
-			(new DonorMapper).mapRow(rs, rowNum),
-			rs.getDate
-			
-			);
+		return new Donation(
+				rs.getLong("donat_id"),
+				rs.getDate("created_on").toLocalDate(),
+				(new DonorMapper).mapRow(rs, rowNum),
+				rs.getDate("date").toLocalDate(),
+				rs.getInt("amount"),
+				rs.getString("message")
+				);
 	}
-						
+
 }
