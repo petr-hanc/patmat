@@ -16,14 +16,14 @@ public class Donation {
     public Donation() {
 		super();
     }
-/*    
+    
     public Donation(LocalDate date, long amount, String message) {
 		super();
 		this.date = date;
 		this.amount = amount;
 		this.message = message;
 	}
-*/
+
     
 	public Donation(Long donatId, LocalDate createdOn, Donor donor, LocalDate date, long amount, String message) {
 		super();

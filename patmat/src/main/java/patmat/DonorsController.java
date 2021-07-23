@@ -4,8 +4,8 @@ import java.time.LocalDate;
 
 import javax.validation.Valid;
 
-// import java.util.List;
-// import java.util.Optional;
+import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -40,10 +40,11 @@ public class DonorsController {
         newDonor.setTown(town);
         newDonor.setFirstName(firstName);
         newDonor.setLastName(lastName);
+        newDonor.setDonations(null);
         repository.save(newDonor);
 
         model.addAttribute("donor", newDonor);
-        model.addAttribute("donations", donationRepository.findAll());
+        //model.addAttribute("donations", donationRepository.findAll());
         return "redirect:/donor/" + newDonor.getId();
 	}
     
@@ -59,8 +60,7 @@ public class DonorsController {
     @PostMapping("{id}")
 	public String addDonation(@PathVariable Long id, @RequestParam String date, 
 			@RequestParam long amount, @RequestParam String message, Model model) {
-    	Donation newDonation = new Donation(LocalDate.parse(date), amount, message);
-    	
+    	Donation newDonation = new Donation(LocalDate.parse(date), amount, message);    	
     	Donor donor = repository.findById(id)
     			.orElseThrow(() -> new IllegalArgumentException("Invalid donor Id:" + id));
 
@@ -68,7 +68,7 @@ public class DonorsController {
     		donationRepository.save(newDonation);
     		donor.getDonations().add(newDonation);
     		repository.save(donor);
-            model.addAttribute("donor", repository.findById(id));
+            model.addAttribute("donor", donor);
             model.addAttribute("donations", donor.getDonations());
             return "redirect:/donors/" + donor.getId();
     	}

@@ -10,7 +10,7 @@ import lombok.Data;
 
 @Data
 public class Donor {
-	private long donor_id;
+	private long donorId;
     private LocalDate createdOn;	
 	private String firstName;
     @NotNull
@@ -22,7 +22,7 @@ public class Donor {
 	public Donor() {
 		super();
 	}
-/*
+
 	public Donor(String firstName, String lastName, String town,
 			List<Donation> donations) {
 		super();
@@ -31,11 +31,11 @@ public class Donor {
 		this.town = town;
 		this.donations = donations;
 	}
-*/
+
 	
-	public Donor(Long donor_id, LocalDate created_on, String firstName, String lastName, String town) {
+	public Donor(Long donorId, LocalDate createdOn, String firstName, String lastName, String town) {
 		super();
-		this.createdOn = created_on;
+		this.createdOn = createdOn;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.town = town;

@@ -23,7 +23,11 @@ public class JdbcDonationRepository implements DonationRepository {
 	
 	@Override
 	public List<Donation> findAll() {
-		return jdbc.query("select id, created_on, donor_id, date, amount, message from donations", new DonationMapper());
+		return jdbc.query(
+				"select donat_id, created_on, donor_id, date, amount, message"
+				+ "from donations join donors",
+				new DonationMapper()
+				);
 	}
 	
 	@Override
