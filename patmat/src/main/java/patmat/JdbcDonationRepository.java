@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -22,13 +23,14 @@ public class JdbcDonationRepository implements DonationRepository {
 	
 	@Override
 	public List<Donation> findAll() {
-		return jdbc.query("select id, created_on, donor_id, date, amount, message from donations", this::mapRowToDonation);
+		return jdbc.query("select id, created_on, donor_id, date, amount, message from donations", new DonationMapper());
 	}
 	
 	@Override
-	public Donation findById(long id) {
-		return jdbc.queryForObject("select id, created_on, donor_id, date, amount, message from donations where id=?",
-				this::mapRowToDonation, id);
+	public Optional<Donation> findById(long id) {
+		Donation donation = jdbc.queryForObject("select id, created_on, donor_id, date, amount, message from donations where id=?",
+				new DonationMapper(), id);
+		return Optional.ofNullable(donation);
 	}
 	
 }
@@ -38,7 +40,7 @@ class DonationMapper implements RowMapper<Donation> {
 		return new Donation(
 				rs.getLong("donat_id"),
 				rs.getDate("created_on").toLocalDate(),
-				(new DonorMapper).mapRow(rs, rowNum),
+				new DonorMapper().mapRow(rs, rowNum),
 				rs.getDate("date").toLocalDate(),
 				rs.getInt("amount"),
 				rs.getString("message")

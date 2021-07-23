@@ -1,6 +1,7 @@
 package patmat;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
 
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface DonationRepository {
 	List<Donation> findAll();
-	Donation findById(long id);
+	Optional<Donation> findById(long id);
 	Donation save(Donation donation);
+	void deleteById(long id);
 }
