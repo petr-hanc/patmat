@@ -52,8 +52,10 @@ public class DonorsController {
 	public String showDonor(@PathVariable long id, Model model) {
     	Donor donor = repository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid donor Id:" + id));
+    	List<Donation> donations = donationRepository.findByDonorId(id);
+    	donor.setDonations(donations);
         model.addAttribute("donor", donor);
-        model.addAttribute("donations", donor.getDonations());
+        model.addAttribute("donations", donations);
         return "donor";
     }    
     
@@ -62,19 +64,18 @@ public class DonorsController {
 			@RequestParam long amount, @RequestParam String message, Model model) {
     	Donation newDonation = new Donation(LocalDate.parse(date), amount, message);    	
     	Donor donor = repository.findById(id)
-    			.orElseThrow(() -> new IllegalArgumentException("Invalid donor Id:" + id));
+    			.orElseThrow(() -> new IllegalArgumentException("Invalid donor id:" + id));
 
-    	if (donor != null) {
-    		donationRepository.save(newDonation);
-    		donor.getDonations().add(newDonation);
-    		repository.save(donor);
-            model.addAttribute("donor", donor);
-            model.addAttribute("donations", donor.getDonations());
-            return "redirect:/donors/" + donor.getId();
-    	}
-
-        model.addAttribute("donors", repository.findAll());
+    	donationRepository.save(newDonation);
+    	donor.getDonations().add(newDonation);
+    	repository.save(donor);
+    	model.addAttribute("donor", donor);
+    	model.addAttribute("donations", donor.getDonations());
+    	return "redirect:/donors/" + donor.getDonorId();
+        /* kdyz je donor null
+    	model.addAttribute("donors", repository.findAll());
         return "redirect:/donors/";
+        */
     }
 
     @GetMapping("del/{id}")

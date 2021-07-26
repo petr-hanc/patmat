@@ -1,5 +1,7 @@
 package patmat;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,14 +47,15 @@ public class DonationsController {
 			Donor donor = origDonation.getDonor();
 			if (donation == null) return "redirect:/donors/";
 			if (result.hasErrors()) {
-				donation.setId(id);
+				donation.setDonatId(id);
 				return "edit-donation";
 			}
-			if (donor == null) throw new Exception("Invalid donor: null"); 
-
+			if (donor == null) throw new Exception("Invalid donor (null) for donation id:" + id); 
 			donation.setDonor(donor);
 			donationRepository.save(donation);
 			model.addAttribute("donor", donor);
+			List<Donation> donations = donor.getDonations();
+			
 			model.addAttribute("donations", donor.getDonations());
 			return "redirect:/donors/" + donor.getId();
 		}

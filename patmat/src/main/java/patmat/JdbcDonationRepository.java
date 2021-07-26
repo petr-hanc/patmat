@@ -2,7 +2,6 @@ package patmat;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,17 +23,33 @@ public class JdbcDonationRepository implements DonationRepository {
 	@Override
 	public List<Donation> findAll() {
 		return jdbc.query(
-				"select donat_id, created_on, donor_id, date, amount, message"
-				+ "from donations join donors",
+				"SELECT dr.donor_id, first_name, last_name, town, dr.created_on, donat_id, amount, date_dt, message, dt.created_on"
+				+ "FROM donors dr LEFT JOIN donations dt USING (donor_id)",
 				new DonationMapper()
 				);
 	}
 	
 	@Override
 	public Optional<Donation> findById(long id) {
-		Donation donation = jdbc.queryForObject("select id, created_on, donor_id, date, amount, message from donations where id=?",
-				new DonationMapper(), id);
+		Donation donation = jdbc.queryForObject(
+				"SELECT dr.donor_id, first_name, last_name, town, dr.created_on AS dr_created_on, donat_id, amount, date_dt, message, dt.created_on AS dt_created_on"
+				+ "FROM donors dr LEFT JOIN donations dt USING (donor_id)"
+				+ "WHERE donat_id = ?",
+				new DonationMapper(),
+				id
+				);
 		return Optional.ofNullable(donation);
+	}
+	
+	@Override
+	public List<Donation> findByDonorId(long donor_id) {
+		return jdbc.query(
+				"SELECT dr.donor_id, first_name, last_name, town, dr.created_on AS dr_created_on, donat_id, amount, date_dt, message, dt.created_on AS dt_created_on"
+				+ "FROM donors dr LEFT JOIN donations dt USING (donor_id)"
+				+ "WHERE dr.donor_id = ?",
+				new DonationMapper(),
+				donor_id
+				);
 	}
 	
 }
@@ -43,9 +58,9 @@ class DonationMapper implements RowMapper<Donation> {
 	public Donation mapRow(ResultSet rs, int rowNum) throws SQLException {
 		return new Donation(
 				rs.getLong("donat_id"),
-				rs.getDate("created_on").toLocalDate(),
+				rs.getDate("dt_created_on").toLocalDate(),
 				new DonorMapper().mapRow(rs, rowNum),
-				rs.getDate("date").toLocalDate(),
+				rs.getDate("date_dt").toLocalDate(),
 				rs.getInt("amount"),
 				rs.getString("message")
 				);

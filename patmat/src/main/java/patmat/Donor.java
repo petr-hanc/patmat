@@ -1,6 +1,7 @@
 package patmat;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.constraints.NotNull;
@@ -21,15 +22,15 @@ public class Donor {
 
 	public Donor() {
 		super();
+		donations =  new ArrayList<Donation>();
 	}
 
-	public Donor(String firstName, String lastName, String town,
-			List<Donation> donations) {
+	public Donor(String firstName, String lastName, String town, List<Donation> donations) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.town = town;
-		this.donations = donations;
+		this.donations = (donations != null) ? donations : new ArrayList<Donation>();
 	}
 
 	
@@ -39,6 +40,7 @@ public class Donor {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.town = town;
+		donations =  new ArrayList<Donation>();
 	}
 	
 }

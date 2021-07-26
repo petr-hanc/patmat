@@ -30,7 +30,7 @@ class DonorMapper implements RowMapper<Donor> {
 	public Donor mapRow(ResultSet rs, int rowNum) throws SQLException {
 		return new Donor(
 				rs.getLong("donor_id"),
-				rs.getDate("created_on").toLocalDate(),
+				rs.getDate("dr_created_on").toLocalDate(),
 				rs.getString("first_name"),
 				rs.getString("last_name"),
 				rs.getString("town")
