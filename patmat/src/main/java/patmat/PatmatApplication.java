@@ -46,7 +46,7 @@ public class PatmatApplication implements CommandLineRunner {
 		donations= new LinkedList<Donation>();
 		donors.add(new Donor("Jarek", "Kmotr", "Přerov", donations));
 		donations= new LinkedList<Donation>();
-		donors.add(new Donor("Petr", "Hanč", "Červený Kostelec", donations));
+		donors.add(new Donor("Hugo", "Hezký", "Hradec Králové", donations));
 		donations= new LinkedList<Donation>();
 		donorRepository.saveAll(donors);
 	}
