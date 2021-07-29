@@ -66,9 +66,9 @@ public class DonorsController {
     	Donor donor = repository.findById(id)
     			.orElseThrow(() -> new IllegalArgumentException("Invalid donor id:" + id));
 
-    	donationRepository.save(newDonation);
     	donor.getDonations().add(newDonation);
-    	repository.save(donor);
+    	newDonation.setDonor(donor);
+    	donationRepository.save(newDonation);
     	model.addAttribute("donor", donor);
     	model.addAttribute("donations", donor.getDonations());
     	return "redirect:/donors/" + donor.getDonorId();
