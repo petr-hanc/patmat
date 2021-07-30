@@ -11,7 +11,7 @@ import lombok.Data;
 
 @Data
 public class Donor {
-	private long donorId;
+	private Long donorId;
     private LocalDate createdOn;	
 	private String firstName;
     @NotNull

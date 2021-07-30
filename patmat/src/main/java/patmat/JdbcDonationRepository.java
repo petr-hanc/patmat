@@ -74,7 +74,6 @@ public class JdbcDonationRepository implements DonationRepository {
 		if (donation.getDonatId() == null) { // new donation - insert
 			String query = "INSERT INTO donations(amount, date_dt, message, donor_id, created_on) "
 					+ "VALUES (?, ?, ?, ?, ?)";
-
 			KeyHolder keyHolder = new GeneratedKeyHolder();
 
 			jdbc.update(
@@ -87,13 +86,13 @@ public class JdbcDonationRepository implements DonationRepository {
 						stmt.setDate(5, java.sql.Date.valueOf(LocalDate.now()));
 						return stmt;
 					},
-					keyHolder);
-
+					keyHolder
+					);
 			donation.setDonatId(keyHolder.getKey().longValue());
 			System.out.println("Id of new donation is: " + donation.getDonatId());
 		} else { // donation update
 			String query = "UPDATE donations\r\n"
-					+ "SET amount = ?, date_dt = ?, message = ?, donor_id = ?, created_on = ?\r\n"
+					+ "SET amount = ?, date_dt = ?, message = ?, donor_id = ?\r\n"
 					+ "WHERE donat_id = ?";
 			jdbc.update(
 					query,
@@ -101,7 +100,6 @@ public class JdbcDonationRepository implements DonationRepository {
 					donation.getDate(),
 					donation.getMessage(),
 					donorId,
-					donation.getCreatedOn(),
 					donation.getDonatId()
 					);
 		}
