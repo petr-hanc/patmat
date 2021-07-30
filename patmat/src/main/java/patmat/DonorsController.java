@@ -5,7 +5,6 @@ import java.time.LocalDate;
 import javax.validation.Valid;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -45,7 +44,7 @@ public class DonorsController {
 
         model.addAttribute("donor", newDonor);
         //model.addAttribute("donations", donationRepository.findAll());
-        return "redirect:/donor/" + newDonor.getId();
+        return "redirect:/donor/" + newDonor.getDonorId();
 	}
     
     @GetMapping("{id}")
@@ -98,7 +97,7 @@ public class DonorsController {
     @PostMapping("edit/{id}")
 	public String editDonor (@PathVariable("id") long id, @Valid Donor donor, BindingResult result, Model model) {
     	if (result.hasErrors()) {
-            donor.setId(id);
+            donor.setDonorId(id);
             return "edit-donor";
     	}
     	if (donor == null) return "redirect:/donors";

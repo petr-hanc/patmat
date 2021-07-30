@@ -28,7 +28,7 @@ public class DonationsController {
 		Donor donor = donation.getDonor();
 		donationRepository.delete(donation);
 		model.addAttribute("donors", repository.findAll());  
-		return "redirect:/donors/" + donor.getId();
+		return "redirect:/donors/" + donor.getDonorId();
 	} 
 
 	@GetMapping("edit/{id}")
@@ -57,7 +57,7 @@ public class DonationsController {
 			List<Donation> donations = donor.getDonations();
 			
 			model.addAttribute("donations", donor.getDonations());
-			return "redirect:/donors/" + donor.getId();
+			return "redirect:/donors/" + donor.getDonorId();
 		}
 		catch (Exception e) {
 			e.printStackTrace();
