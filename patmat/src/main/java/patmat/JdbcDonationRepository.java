@@ -116,14 +116,26 @@ public class JdbcDonationRepository implements DonationRepository {
 		else jdbc.update("DELETE FROM donations WHERE donat_id = ?", donation.getDonatId());
 	}
 		
-} // JdbcDonationRepository 
+} // JdbcDonationRepository
+
+class DonorJoinMapper implements RowMapper<Donor> {
+	public Donor mapRow(ResultSet rs, int rowNum) throws SQLException {
+		return new Donor(
+				rs.getLong("donor_id"),
+				rs.getDate("dr_created_on").toLocalDate(),
+				rs.getString("first_name"),
+				rs.getString("last_name"),
+				rs.getString("town")
+				);
+	}
+}
 
 class DonationMapper implements RowMapper<Donation> {
 	public Donation mapRow(ResultSet rs, int rowNum) throws SQLException {
 		return new Donation(
 				rs.getLong("donat_id"),
-				new DonorMapper().mapRow(rs, rowNum),
-				rs.getDate("dt_created_on").toLocalDate(),
+				new DonorJoinMapper().mapRow(rs, rowNum),
+				rs.getDate("created_on").toLocalDate(),
 				rs.getDate("date_dt").toLocalDate(),
 				rs.getInt("amount"),
 				rs.getString("message")
