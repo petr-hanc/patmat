@@ -28,7 +28,7 @@ public class JdbcDonationRepository implements DonationRepository {
 	public List<Donation> findAll() {
 		return jdbc.query(
 				"SELECT dr.donor_id, first_name, last_name, town, dr.created_on, donat_id, amount, date_dt, message, dt.created_on"
-				+ "FROM donors dr LEFT JOIN donations dt USING (donor_id)",
+				+ " FROM donors dr LEFT JOIN donations dt USING (donor_id)",
 				new DonationMapper()
 				);
 	}
@@ -37,8 +37,8 @@ public class JdbcDonationRepository implements DonationRepository {
 	public Optional<Donation> findById(long id) {
 		Donation donation = jdbc.queryForObject(
 				"SELECT dr.donor_id, first_name, last_name, town, dr.created_on AS dr_created_on, donat_id, amount, date_dt, message, dt.created_on AS dt_created_on"
-				+ "FROM donors dr LEFT JOIN donations dt USING (donor_id)"
-				+ "WHERE donat_id = ?",
+				+ " FROM donors dr LEFT JOIN donations dt USING (donor_id)"
+				+ " WHERE donat_id = ?",
 				new DonationMapper(),
 				id
 				);
@@ -49,8 +49,8 @@ public class JdbcDonationRepository implements DonationRepository {
 	public List<Donation> findByDonorId(long donorId) {
 		return jdbc.query(
 				"SELECT dr.donor_id, first_name, last_name, town, dr.created_on AS dr_created_on, donat_id, amount, date_dt, message, dt.created_on AS dt_created_on"
-				+ "FROM donors dr LEFT JOIN donations dt USING (donor_id)"
-				+ "WHERE dr.donor_id = ?",
+				+ " FROM donors dr LEFT JOIN donations dt USING (donor_id)"
+				+ " WHERE dr.donor_id = ?",
 				new DonationMapper(),
 				donorId
 				);
@@ -72,8 +72,8 @@ public class JdbcDonationRepository implements DonationRepository {
 		}
 		if (donation.getCreatedOn() == null) donation.setCreatedOn(LocalDate.now());
 		if (donation.getDonatId() == null) { // new donation - insert
-			String query = "INSERT INTO donations(amount, date_dt, message, donor_id, created_on) "
-					+ "VALUES (?, ?, ?, ?, ?)";
+			String query = "INSERT INTO donations(amount, date_dt, message, donor_id, created_on)"
+					+ " VALUES (?, ?, ?, ?, ?)";
 			KeyHolder keyHolder = new GeneratedKeyHolder();
 
 			jdbc.update(
