@@ -1,5 +1,6 @@
 package patmat;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -47,13 +48,16 @@ public class JdbcDonationRepository implements DonationRepository {
 	
 	@Override
 	public List<Donation> findByDonorId(long donorId) {
-		return jdbc.query(
+		List<Donation> donations = jdbc.query(
 				"SELECT dr.donor_id, first_name, last_name, town, dr.created_on AS dr_created_on, donat_id, amount, date_dt, message, dt.created_on AS dt_created_on"
 				+ " FROM donors dr LEFT JOIN donations dt USING (donor_id)"
 				+ " WHERE dr.donor_id = ?",
 				new DonationMapper(),
 				donorId
 				);
+		if (donations.size() == 1 && donations.iterator().next() == null)
+			return null;	// query returned List with 1 null record
+		else return donations;
 	}
 	
 	/** Parameter donation: donation must have a donor (donation.donor is not null] */ 
@@ -132,14 +136,21 @@ class DonorJoinMapper implements RowMapper<Donor> {
 
 class DonationMapper implements RowMapper<Donation> {
 	public Donation mapRow(ResultSet rs, int rowNum) throws SQLException {
-		return new Donation(
-				rs.getLong("donat_id"),
-				new DonorJoinMapper().mapRow(rs, rowNum),
-				rs.getDate("created_on").toLocalDate(),
-				rs.getDate("date_dt").toLocalDate(),
-				rs.getInt("amount"),
-				rs.getString("message")
-				);
+		Long donatId = rs.getObject("donat_id", Long.class);	// getLong() would return 0 if NULL
+		if (donatId == null) return null;
+		else {
+			Date createdOn = rs.getDate("created_on");
+			Date date = rs.getDate("date_dt");
+			return new Donation(
+					donatId,
+					new DonorJoinMapper().mapRow(rs, rowNum),
+					(createdOn == null) ? null : createdOn.toLocalDate(),
+					(date == null) ? null : date.toLocalDate(),
+					rs.getInt("amount"),
+					rs.getString("message")
+					);			
+		}
+		
 	}
 
 }
