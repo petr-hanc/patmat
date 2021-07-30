@@ -59,9 +59,9 @@
 							<td th:text="${donation.date}"></td>
 							<td th:text="${donation.amount}"></td>
 							<td th:text="${donation.message}"></td>
-							<td><a th:href="@{/donations/del/{id}(id=${donation.id})}">smazat</a>
+							<td><a th:href="@{/donations/del/{id}(id=${donation.donatId})}">smazat</a>
 							</td>
-							<td><a th:href="@{/donations/edit/{id}(id=${donation.id})}">upravit</a>
+							<td><a th:href="@{/donations/edit/{id}(id=${donation.donatId})}">upravit</a>
 							</td>
 						</tr>
 					</tbody>
