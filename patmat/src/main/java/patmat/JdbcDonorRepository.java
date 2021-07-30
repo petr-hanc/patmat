@@ -49,6 +49,7 @@ public class JdbcDonorRepository implements DonorRepository {
 		return Optional.ofNullable(donor);
 	}
 	
+	/** returns null if there is a problem or the same object as the parameter */
 	@Override
 	public Donor save(Donor donor) {
 		if (donor == null) {

@@ -60,7 +60,9 @@ public class JdbcDonationRepository implements DonationRepository {
 		else return donations;
 	}
 	
-	/** Parameter donation: donation must have a donor (donation.donor is not null] */ 
+	/** Parameter donation: donation must have a donor (donation.donor is not null]
+	 *  Returns null if there is a problem or the same object as the parameter. 
+	 */
 	@Override
 	public Donation save(Donation donation) {
 		final long donorId;
