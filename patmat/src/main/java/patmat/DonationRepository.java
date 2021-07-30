@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 public interface DonationRepository {
 	List<Donation> findAll();
 	Optional<Donation> findById(long id);
-	List<Donation> findByDonorId(long id); 
+	List<Donation> findByDonorId(long donorId); 
 	Donation save(Donation donation);
-	void deleteById(long id);
+	void delete(Donation donation); 
 }

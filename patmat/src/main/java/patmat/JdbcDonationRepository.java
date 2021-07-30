@@ -46,13 +46,13 @@ public class JdbcDonationRepository implements DonationRepository {
 	}
 	
 	@Override
-	public List<Donation> findByDonorId(long donor_id) {
+	public List<Donation> findByDonorId(long donorId) {
 		return jdbc.query(
 				"SELECT dr.donor_id, first_name, last_name, town, dr.created_on AS dr_created_on, donat_id, amount, date_dt, message, dt.created_on AS dt_created_on"
 				+ "FROM donors dr LEFT JOIN donations dt USING (donor_id)"
 				+ "WHERE dr.donor_id = ?",
 				new DonationMapper(),
-				donor_id
+				donorId
 				);
 	}
 	
@@ -106,6 +106,16 @@ public class JdbcDonationRepository implements DonationRepository {
 					);
 		}
 		return donation;
+	}
+
+	@Override
+	public void delete(Donation donation) {
+		if (donation == null) {
+			System.out.println("Delete donation error: null parameter");
+			return;
+		}
+		if (donation.getDonatId() == null) System.out.println("Delete donation error: null id");
+		else jdbc.update("DELETE FROM donations WHERE donat_id = ?", donation.getDonatId());
 	}
 		
 } // JdbcDonationRepository 
