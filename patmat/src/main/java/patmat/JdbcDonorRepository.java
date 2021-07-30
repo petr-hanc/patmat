@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -26,10 +27,15 @@ public class JdbcDonorRepository implements DonorRepository {
 	
 	@Override
 	public List<Donor> findAll() {
-		return jdbc.query(
-				"SELECT * FROM donors",
-				new DonorMapper()
-				);
+		try {
+			return jdbc.query(
+					"SELECT * FROM donors",
+					new DonorMapper()
+					);
+		} catch (DataAccessException e) {
+			e.printStackTrace();
+			return null;   
+		}
 	}	
 	
 	@Override
