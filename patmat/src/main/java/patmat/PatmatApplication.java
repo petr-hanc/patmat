@@ -27,6 +27,7 @@ public class PatmatApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
+		/*
 		List<Donation> donations = new LinkedList<Donation>();
 		List<Donor> donors = new LinkedList<Donor>();
 		donations.add(new Donation(LocalDate.parse("2020-11-05"), 500000 , "Nezapomeňte!"));
@@ -49,6 +50,7 @@ public class PatmatApplication implements CommandLineRunner {
 		donors.add(new Donor("Hugo", "Hezký", "Hradec Králové", donations));
 		donations= new LinkedList<Donation>();
 		donorRepository.saveAll(donors);
+		*/
 	}
 
 }
