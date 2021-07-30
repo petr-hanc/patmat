@@ -1,6 +1,7 @@
 package patmat;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 
 import javax.validation.Valid;
 
@@ -58,21 +59,28 @@ public class DonorsController {
     
     @PostMapping("{id}")
 	public String addDonation(@PathVariable Long id, @RequestParam String date, 
-			@RequestParam long amount, @RequestParam String message, Model model) {
-    	Donation newDonation = new Donation(LocalDate.parse(date), amount, message);    	
+			@RequestParam String amount, @RequestParam String message, Model model) {
+    	Donation newDonation = new Donation();  	
     	Donor donor = repository.findById(id)
     			.orElseThrow(() -> new IllegalArgumentException("Invalid donor id:" + id));
-
+    	
+    	try {
+    		newDonation.setDate(LocalDate.parse(date));
+    	} catch (DateTimeParseException e) {
+    		if (date != "") System.out.println("Donation " + id + ": bad date format");
+    	}
+    	try {
+    		newDonation.setAmount(Long.parseLong(amount));
+    	} catch (NumberFormatException e) {
+    		if (amount != "") System.out.println("Donation " + id + ": bad amount format");
+    	}
+    	newDonation.setMessage(message);  
     	donor.getDonations().add(newDonation);
     	newDonation.setDonor(donor);
     	donationRepository.save(newDonation);
     	model.addAttribute("donor", donor);
     	model.addAttribute("donations", donor.getDonations());
     	return "redirect:/donors/" + donor.getDonorId();
-        /* kdyz je donor null
-    	model.addAttribute("donors", repository.findAll());
-        return "redirect:/donors/";
-        */
     }
 
     @GetMapping("del/{id}")

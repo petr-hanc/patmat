@@ -85,8 +85,11 @@ public class JdbcDonationRepository implements DonationRepository {
 			jdbc.update(
 					connection -> {
 						PreparedStatement stmt = connection.prepareStatement(query, new String[]{"donat_id"});
-						stmt.setLong(1, donation.getAmount());
-						stmt.setDate(2, java.sql.Date.valueOf(donation.getDate()));
+						if (donation.getAmount() == null) stmt.setNull(1, java.sql.Types.BIGINT);
+						else stmt.setLong(1, donation.getAmount());		// setLong() doesn't accept null
+						LocalDate date = donation.getDate();
+						if (date != null) stmt.setDate(2, java.sql.Date.valueOf(donation.getDate()));
+						else stmt.setDate(2, null);
 						stmt.setString(3, donation.getMessage());
 						stmt.setLong(4, donorId);
 						stmt.setDate(5, java.sql.Date.valueOf(LocalDate.now()));
@@ -139,6 +142,7 @@ class DonorJoinMapper implements RowMapper<Donor> {
 class DonationMapper implements RowMapper<Donation> {
 	public Donation mapRow(ResultSet rs, int rowNum) throws SQLException {
 		Long donatId = rs.getObject("donat_id", Long.class);	// getLong() would return 0 if NULL
+		Long amount = rs.getObject("amount", Long.class);
 		if (donatId == null) return null;
 		else {
 			Date createdOn = rs.getDate("created_on");
@@ -148,7 +152,7 @@ class DonationMapper implements RowMapper<Donation> {
 					new DonorJoinMapper().mapRow(rs, rowNum),
 					(createdOn == null) ? null : createdOn.toLocalDate(),
 					(date == null) ? null : date.toLocalDate(),
-					rs.getInt("amount"),
+					amount,
 					rs.getString("message")
 					);			
 		}

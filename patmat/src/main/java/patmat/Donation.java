@@ -10,14 +10,14 @@ public class Donation {
     private Donor donor;
     private LocalDate createdOn;
     private LocalDate date;
-    private long amount;  // in CZK
+    private Long amount;  // in CZK
     private String message;
     
     public Donation() {
 		super();
     }
     
-    public Donation(LocalDate date, long amount, String message) {
+    public Donation(LocalDate date, Long amount, String message) {
 		super();
 		this.date = date;
 		this.amount = amount;
@@ -25,7 +25,7 @@ public class Donation {
 	}
 
     
-	public Donation(Long donatId, Donor donor, LocalDate createdOn, LocalDate date, long amount, String message) {
+	public Donation(Long donatId, Donor donor, LocalDate createdOn, LocalDate date, Long amount, String message) {
 		super();
 		this.donatId = donatId;
 		this.donor = donor;
