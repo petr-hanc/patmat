@@ -36,6 +36,7 @@ public class Donor {
 	
 	public Donor(Long donorId, LocalDate createdOn, String firstName, String lastName, String town) {
 		super();
+		this.donorId = donorId;
 		this.createdOn = createdOn;
 		this.firstName = firstName;
 		this.lastName = lastName;
