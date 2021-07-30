@@ -34,13 +34,13 @@
 				    	<td th:text="${donor.firstName + ' ' + donor.lastName}"></td>
 				    	<td th:text="${donor.town}"></td>
 				    	<td>
-					    	<a th:href="@{/donors/del/{id}(id=${donor.id})}">smazat</a>
+					    	<a th:href="@{/donors/del/{id}(id=${donor.donorId})}">smazat</a>
 				    	</td>
 				    	<td>
-					    	<a th:href="@{/donors/edit/{id}(id=${donor.id})}">upravit</a>
+					    	<a th:href="@{/donors/edit/{id}(id=${donor.donorId})}">upravit</a>
 				    	</td>
 				    	<td>
-					    	<a th:href="@{/donors/{id}(id=${donor.id})}">zobrazit</a>
+					    	<a th:href="@{/donors/{id}(id=${donor.donorId})}">zobrazit</a>
 				    	</td>
 				    </tr>
 				</tbody>
