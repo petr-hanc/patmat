@@ -1,7 +1,5 @@
 package patmat;
 
-import java.util.List;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,8 +52,6 @@ public class DonationsController {
 			donation.setDonor(donor);
 			donationRepository.save(donation);
 			model.addAttribute("donor", donor);
-			List<Donation> donations = donor.getDonations();
-			
 			model.addAttribute("donations", donor.getDonations());
 			return "redirect:/donors/" + donor.getDonorId();
 		}
