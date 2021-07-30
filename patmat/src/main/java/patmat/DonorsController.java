@@ -41,10 +41,8 @@ public class DonorsController {
         newDonor.setLastName(lastName);
         newDonor.setDonations(null);
         repository.save(newDonor);
-
         model.addAttribute("donor", newDonor);
-        //model.addAttribute("donations", donationRepository.findAll());
-        return "redirect:/donor/" + newDonor.getDonorId();
+        return "redirect:/donors/" + newDonor.getDonorId();
 	}
     
     @GetMapping("{id}")
