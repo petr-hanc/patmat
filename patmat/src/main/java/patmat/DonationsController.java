@@ -44,8 +44,8 @@ public class DonationsController {
 					.orElseThrow(() -> new IllegalArgumentException("Invalid donation id:" + id));
 			Donor donor = origDonation.getDonor();
 			if (donation == null) return "redirect:/donors/";
+			donation.setDonatId(id);
 			if (result.hasErrors()) {
-				donation.setDonatId(id);
 				return "edit-donation";
 			}
 			if (donor == null) throw new Exception("Invalid donor (null) for donation id:" + id); 

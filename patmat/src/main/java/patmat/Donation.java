@@ -2,6 +2,8 @@ package patmat;
 
 import java.time.LocalDate;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import lombok.Data;
 
 @Data
@@ -9,6 +11,7 @@ public class Donation {
 	private Long donatId;
     private Donor donor;
     private LocalDate createdOn;
+    @DateTimeFormat(pattern = "d. M. yyyy")
     private LocalDate date;
     private Long amount;  // in CZK
     private String message;

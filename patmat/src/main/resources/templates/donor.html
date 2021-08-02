@@ -50,7 +50,8 @@
 					</thead>
 					<tbody>
 						<tr th:each="donation : ${donor.donations}">
-							<td th:text="${donation.date}"></td>
+							<td th:text="${#temporals.format(donation.date, 'd. M. yyyy')}"></td>
+							<td th:text="${donation.amount}"></td>
 							<td th:text="${donation.amount}"></td>
 							<td th:text="${donation.message}"></td>
 							<td><a th:href="@{/donations/del/{id}(id=${donation.donatId})}">smazat</a>
