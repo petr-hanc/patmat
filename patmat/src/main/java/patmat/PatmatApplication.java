@@ -1,12 +1,10 @@
 package patmat;
 
-import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.core.SpringVersion;
 
 @SpringBootApplication
 public class PatmatApplication implements CommandLineRunner {
@@ -25,6 +23,8 @@ public class PatmatApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
+		
+		System.out.println("Current Spring version: " + SpringVersion.getVersion());
 	
 	}
 }
