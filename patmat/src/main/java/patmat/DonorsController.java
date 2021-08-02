@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -51,19 +52,19 @@ public class DonorsController {
     	Donor donor = repository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid donor Id:" + id));
     	List<Donation> donations = donationRepository.findByDonorId(id);
+    	Donation newDonation = new Donation();		// for adding a new donation
     	donor.setDonations(donations);
         model.addAttribute("donor", donor);
         model.addAttribute("donations", donations);
+        model.addAttribute("newDonation", newDonation);
         return "donor";
     }    
     
     @PostMapping("{id}")
-	public String addDonation(@PathVariable Long id, @RequestParam String date, 
-			@RequestParam String amount, @RequestParam String message, Model model) {
-    	Donation newDonation = new Donation();  	
+	public String addDonation(@PathVariable Long id, @ModelAttribute @Valid Donation newDonation, Model model) {
     	Donor donor = repository.findById(id)
     			.orElseThrow(() -> new IllegalArgumentException("Invalid donor id:" + id));
-    	
+    	/*
     	try {
     		newDonation.setDate(LocalDate.parse(date));
     	} catch (DateTimeParseException e) {
@@ -74,10 +75,15 @@ public class DonorsController {
     	} catch (NumberFormatException e) {
     		if (amount != "") System.out.println("Donation " + id + ": bad amount format");
     	}
-    	newDonation.setMessage(message);  
-    	donor.getDonations().add(newDonation);
-    	newDonation.setDonor(donor);
-    	donationRepository.save(newDonation);
+    	newDonation.setMessage(message);
+    	*/  
+    	if (newDonation == null) {
+    		System.out.println("Error of donation " + id + ": null donation");
+    	} else {
+    		donor.getDonations().add(newDonation);
+    		newDonation.setDonor(donor);
+    		donationRepository.save(newDonation);
+    	}
     	model.addAttribute("donor", donor);
     	model.addAttribute("donations", donor.getDonations());
     	return "redirect:/donors/" + donor.getDonorId();

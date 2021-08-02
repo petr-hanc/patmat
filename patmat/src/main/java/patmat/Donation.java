@@ -11,7 +11,7 @@ public class Donation {
 	private Long donatId;
     private Donor donor;
     private LocalDate createdOn;
-    @DateTimeFormat(pattern = "d. M. yyyy")
+    @DateTimeFormat(pattern = "d. M. yyyy", fallbackPatterns = { "yyyy-MM-dd", "dd.MM.yyyy" })
     private LocalDate date;
     private Long amount;  // in CZK
     private String message;
