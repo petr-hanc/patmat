@@ -1,11 +1,8 @@
 package patmat;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
+import java.util.List;
 
 import javax.validation.Valid;
-
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -60,32 +57,26 @@ public class DonorsController {
         return "donor";
     }    
     
+    // @ModelAttribute("newDonation") before parameter is necessary for validation to work, because type Donation and var. newDonation have different names
     @PostMapping("{id}")
-	public String addDonation(@PathVariable Long id, @ModelAttribute @Valid Donation newDonation, Model model) {
+	public String addDonation(@PathVariable Long id, @Valid @ModelAttribute("newDonation") Donation newDonation, BindingResult result, Model model) {
     	Donor donor = repository.findById(id)
     			.orElseThrow(() -> new IllegalArgumentException("Invalid donor id:" + id));
-    	/*
-    	try {
-    		newDonation.setDate(LocalDate.parse(date));
-    	} catch (DateTimeParseException e) {
-    		if (date != "") System.out.println("Donation " + id + ": bad date format");
+    	if (result.hasErrors()) {
+    		List<Donation> donations = donationRepository.findByDonorId(id);
+    		donor.setDonations(donations);
+    		model.addAttribute("donor", donor);
+    		model.addAttribute("donations", donations);
+    		model.addAttribute("newDonation", newDonation);
+    		return "donor";
     	}
-    	try {
-    		newDonation.setAmount(Long.parseLong(amount));
-    	} catch (NumberFormatException e) {
-    		if (amount != "") System.out.println("Donation " + id + ": bad amount format");
-    	}
-    	newDonation.setMessage(message);
-    	*/  
     	if (newDonation == null) {
     		System.out.println("Error of donation " + id + ": null donation");
     	} else {
-    		donor.getDonations().add(newDonation);
     		newDonation.setDonor(donor);
     		donationRepository.save(newDonation);
     	}
     	model.addAttribute("donor", donor);
-    	model.addAttribute("donations", donor.getDonations());
     	return "redirect:/donors/" + donor.getDonorId();
     }
 

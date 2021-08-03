@@ -2,6 +2,8 @@ package patmat;
 
 import java.time.LocalDate;
 
+import javax.validation.constraints.Size;
+
 import org.springframework.format.annotation.DateTimeFormat;
 
 import lombok.Data;
@@ -14,6 +16,7 @@ public class Donation {
     @DateTimeFormat(pattern = "d. M. yyyy", fallbackPatterns = { "yyyy-MM-dd", "dd.MM.yyyy" })
     private LocalDate date;
     private Long amount;  // in CZK
+    @Size(max=5, message="Poznámka může mít max. 5 znaků.")
     private String message;
     
     public Donation() {
