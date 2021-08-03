@@ -67,41 +67,6 @@
 			<div class="row">
 				<div class="col-lg-6 col-md-5 col-sm-4">
 					<h3>Přidat dar</h3>
-					
-					<!-- 
-					<form class="form-horizontal" action="#" th:action="@{/donors/{id}(id=${donor.donorId})}" th:object="${newDonation}" method="post">
-            	<fieldset>
-            		<div class="form-group">
-	                    <label class="col-lg-3 control-label">Datum</label>
-	                    <div class="col-lg-9">
-	                    	<input type="text" class="form-control" name="date" th:field="*{date}" > 
-	                    	<span th:if="${#fields.hasErrors('date')}" th:errors="*{date}" class="text-danger"></span>
-	                    </div>
-                	</div>
-            		<div class="form-group">
-	                    <label class="col-lg-3 control-label">Částka (Kč)</label>
-	                    <div class="col-lg-9">
-	                    	<input type="text" class="form-control" name="amount" th:field="*{amount}">
-	                    	<span th:if="${#fields.hasErrors('amount')}" th:errors="*{amount}" class="text-danger"></span>
-	                    </div>
-                	</div>
-            		<div class="form-group">
-	                    <label class="col-lg-3 control-label">Vzkaz od dárce</label>
-	                    <div class="col-lg-9">
-	                    	<input type="text" class="form-control" name="message" th:field="*{message}"/>
-	                    	<span th:if="${#fields.hasErrors('message')}" th:errors="*{message}" class="text-danger"></span>
-	                    </div>
-                	</div>
-            		<div class="form-group">
-                		<div class="col-lg-12 col-lg-offset-3">
-                			<button type="submit" class="btn btn-primary" name="button">Aktualizovat</button>
-                		</div>
-                	</div>
-                </fieldset>
-            </form>
-             -->
-					
-					
 					<form action="#"  th:action="@{/donors/{id}(id=${donor.donorId})}" method="post" th:object="${newDonation}" class="form-horizontal">
 						<fieldset>
 							<div class="form-group">
