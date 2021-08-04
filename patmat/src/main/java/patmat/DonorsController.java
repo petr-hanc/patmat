@@ -37,7 +37,6 @@ public class DonorsController {
 	public String addDonor(@RequestParam String town, @Valid @ModelAttribute("newDonor") Donor newDonor, BindingResult result, Model model) {
     	if (result.hasErrors()) {
     		model.addAttribute("donors", repository.findAll());
-            model.addAttribute("newDonor", newDonor);
             return "donors";
     	}
         newDonor.setDonations(null);
