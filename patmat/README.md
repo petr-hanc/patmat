@@ -1,3 +1,12 @@
-Spouštěl jsem to v Spring Tool Suite na defaultním portu (8080), v Tomcatu od Spring Boot a s interní databází H2 v paměti. Je to DB dárců a jejich darů.
+Web application for testing work with Java 8, Spring Boot, Thymeleaf, JDBC, H2 Database, CRUD. 
+
+It is a database of donors and their donations.
+
+App uses default port (8080), Tomcat integrated in Spring Boot and internal H2 database (in memory).
+
+Running in Windows:
+
+mvnw package
+java -jar -Dfile.encoding=UTF8  target\patmat-0.0.1-SNAPSHOT.jar
 
 Petr Hanč
