@@ -18,7 +18,7 @@ public class Donation {
     private LocalDate date;
     @NotNull(message="Částka nesmí být prázdná.")
     private Long amount;  // in CZK
-    @Size(max=5, message="Poznámka může mít nejvýš 5 znaků.")
+    @Size(max=255, message="Poznámka může mít nejvýš 255 znaků.")
     private String message;
     
     public Donation() {

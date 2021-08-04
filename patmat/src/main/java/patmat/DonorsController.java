@@ -43,8 +43,9 @@ public class DonorsController {
     	}
         newDonor.setDonations(null);
         repository.save(newDonor);
-        model.addAttribute("donor", newDonor);
-        return "redirect:/donors/" + newDonor.getDonorId();
+        model.addAttribute("donors", repository.findAll());
+        model.addAttribute("newDonor", new Donor());
+        return "donors";
 	}
     
     @GetMapping("{id}")
@@ -69,9 +70,6 @@ public class DonorsController {
     		System.out.println("Error of donation " + id + ": null donation");
     	}	
     	else {
-    		//
-    		System.out.println("newDonation date: " + ((newDonation.getDate() == null) ? "" : newDonation.getDate().format(DateTimeFormatter.ISO_LOCAL_DATE)));
-    		System.out.println((newDonation.getDate() == null) ? "" : newDonation.getDate().format(DateTimeFormatter.ISO_LOCAL_DATE));
     		if (result.hasErrors()) {
     			List<Donation> donations = donationRepository.findByDonorId(id);
     			donor.setDonations(donations);
