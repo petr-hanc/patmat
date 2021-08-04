@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("/donations/")
@@ -33,31 +34,23 @@ public class DonationsController {
 	public String showEditDonationForm (@PathVariable("id") long id, Model model) {
 		Donation donation = donationRepository.findById(id)
 				.orElseThrow(() -> new IllegalArgumentException("Invalid donation Id:" + id));
-		model.addAttribute("donation", donation);  
+		model.addAttribute("donation", donation);
+		model.addAttribute("donorId", donation.getDonor().getDonorId());  
 		return "edit-donation";
 	}
 
 	@PostMapping("edit/{id}")
-	public String editDonation (@PathVariable("id") long id, @Valid Donation donation, BindingResult result, Model model) {
-		try {
-			Donation origDonation = donationRepository.findById(id)
-					.orElseThrow(() -> new IllegalArgumentException("Invalid donation id:" + id));
-			Donor donor = origDonation.getDonor();
+	public String editDonation (@PathVariable("id") long id,  @RequestParam Long donorId, @Valid Donation donation, BindingResult result, Model model) {
 			if (donation == null) return "redirect:/donors/";
-			donation.setDonatId(id);
 			if (result.hasErrors()) {
+				model.addAttribute("donorId", donorId); 
 				return "edit-donation";
 			}
-			if (donor == null) throw new Exception("Invalid donor (null) for donation id:" + id); 
+			Donor donor = repository.findById(donorId)
+					.orElseThrow(() -> new IllegalArgumentException("Invalid donor id:" + donorId + " for donation id: " + id));
 			donation.setDonor(donor);
 			donationRepository.save(donation);
 			model.addAttribute("donor", donor);
-			model.addAttribute("donations", donor.getDonations());
 			return "redirect:/donors/" + donor.getDonorId();
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-			return "redirect:/donors/";   
-		}
 	}
 }

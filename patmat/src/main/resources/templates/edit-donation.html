@@ -41,6 +41,9 @@
                 			<button type="submit" class="btn btn-primary" name="button">Aktualizovat</button>
                 		</div>
                 	</div>
+                	<input type="hidden" th:field="*{donatId}">
+                	<input type="hidden" th:field="*{createdOn}">
+                	<input type="hidden" name="donorId" th:value="${donorId}">
                 </fieldset>
             </form>
           </div>
