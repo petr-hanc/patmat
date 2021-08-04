@@ -33,6 +33,7 @@
 	                    <label class="col-lg-3 control-label">Město</label>
 	                    <div class="col-lg-9">
 	                    	<input type="text" class="form-control" name="town" th:field="*{town}"/>
+	                    	<span th:if="${#fields.hasErrors('town')}" th:errors="*{town}" class="text-danger"></span>
 	                    </div>
                 	</div>
             		<div class="form-group">

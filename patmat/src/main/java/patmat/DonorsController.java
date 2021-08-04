@@ -28,9 +28,8 @@ public class DonorsController {
 
     @GetMapping
 	public String showDonorsList(Model model) {
-    	Donor newDonor = new Donor();
         model.addAttribute("donors", repository.findAll());
-        model.addAttribute("newDonor", newDonor);
+        model.addAttribute("newDonor", new Donor());
         return "donors";
 	}
     
@@ -82,6 +81,7 @@ public class DonorsController {
     		donationRepository.save(newDonation);
     	}
     	model.addAttribute("donor", donor);
+    	model.addAttribute("newDonor", new Donor());
     	return "redirect:/donors/" + donor.getDonorId();
     }
 
@@ -91,6 +91,7 @@ public class DonorsController {
                 .orElseThrow(() -> new IllegalArgumentException("Invalid donor Id:" + id));
     	repository.delete(donor);
         model.addAttribute("donors", repository.findAll());
+        model.addAttribute("newDonor", new Donor());
         return "donors";            
 	}  
     
@@ -111,6 +112,7 @@ public class DonorsController {
     	if (donor == null) return "redirect:/donors";
     	repository.save(donor);
         model.addAttribute("donors", repository.findAll());
+        model.addAttribute("newDonor", new Donor());
         return "donors";         
 	}  
     
