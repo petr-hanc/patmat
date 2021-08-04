@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 import lombok.Data;
@@ -12,11 +12,14 @@ import lombok.Data;
 @Data
 public class Donor {
 	private Long donorId;
-    private LocalDate createdOn;	
+    private LocalDate createdOn;
+    @Size(max=5, message="Jméno může mít nejvýš 5 znaků.")
 	private String firstName;
-    @NotNull
-    @Size(min=1, message="Příjmení musí mít aspoň 1 znak")
+    @NotBlank(message="Příjmení nesmí být prázdné.")
+    @Size(max=5, message="Příjmení může mít nejvýš 5 znaků.")
+    //@Size(min=1, max=5, message="Příjmení musí mít 1 až 5 znaků")
 	private String lastName;
+    @Size(max=5, message="Jméno může mít nejvýš 5 znaků.")
 	private String town;
 	private List<Donation> donations;
 

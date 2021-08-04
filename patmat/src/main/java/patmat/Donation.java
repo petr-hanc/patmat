@@ -2,6 +2,7 @@ package patmat;
 
 import java.time.LocalDate;
 
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -15,8 +16,9 @@ public class Donation {
     private LocalDate createdOn;
     @DateTimeFormat(pattern = "d. M. yyyy", fallbackPatterns = { "yyyy-MM-dd", "dd.MM.yyyy" })
     private LocalDate date;
+    @NotNull(message="Částka nesmí být prázdná.")
     private Long amount;  // in CZK
-    @Size(max=5, message="Poznámka může mít max. 5 znaků.")
+    @Size(max=5, message="Poznámka může mít nejvýš 5 znaků.")
     private String message;
     
     public Donation() {

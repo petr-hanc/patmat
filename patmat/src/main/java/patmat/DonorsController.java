@@ -1,5 +1,6 @@
 package patmat;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -27,17 +28,19 @@ public class DonorsController {
 
     @GetMapping
 	public String showDonorsList(Model model) {
+    	Donor newDonor = new Donor();
         model.addAttribute("donors", repository.findAll());
+        model.addAttribute("newDonor", newDonor);
         return "donors";
 	}
     
     @PostMapping
-	public String addDonor(@RequestParam String town, 
-						@RequestParam String firstName, @RequestParam String lastName, Model model) {
-        Donor newDonor = new Donor();
-        newDonor.setTown(town);
-        newDonor.setFirstName(firstName);
-        newDonor.setLastName(lastName);
+	public String addDonor(@RequestParam String town, @Valid @ModelAttribute("newDonor") Donor newDonor, BindingResult result, Model model) {
+    	if (result.hasErrors()) {
+    		model.addAttribute("donors", repository.findAll());
+            model.addAttribute("newDonor", newDonor);
+            return "donors";
+    	}
         newDonor.setDonations(null);
         repository.save(newDonor);
         model.addAttribute("donor", newDonor);
@@ -57,22 +60,26 @@ public class DonorsController {
         return "donor";
     }    
     
-    // @ModelAttribute("newDonation") before parameter is necessary for validation to work, because type Donation and var. newDonation have different names
     @PostMapping("{id}")
 	public String addDonation(@PathVariable Long id, @Valid @ModelAttribute("newDonation") Donation newDonation, BindingResult result, Model model) {
+    	// for validation to work there is necessary @ModelAttribute("newDonation") before parameter, because type Donation and var. newDonation have different names
     	Donor donor = repository.findById(id)
     			.orElseThrow(() -> new IllegalArgumentException("Invalid donor id:" + id));
-    	if (result.hasErrors()) {
-    		List<Donation> donations = donationRepository.findByDonorId(id);
-    		donor.setDonations(donations);
-    		model.addAttribute("donor", donor);
-    		model.addAttribute("donations", donations);
-    		model.addAttribute("newDonation", newDonation);
-    		return "donor";
-    	}
     	if (newDonation == null) {
     		System.out.println("Error of donation " + id + ": null donation");
-    	} else {
+    	}	
+    	else {
+    		//
+    		System.out.println("newDonation date: " + ((newDonation.getDate() == null) ? "" : newDonation.getDate().format(DateTimeFormatter.ISO_LOCAL_DATE)));
+    		System.out.println((newDonation.getDate() == null) ? "" : newDonation.getDate().format(DateTimeFormatter.ISO_LOCAL_DATE));
+    		if (result.hasErrors()) {
+    			List<Donation> donations = donationRepository.findByDonorId(id);
+    			donor.setDonations(donations);
+    			model.addAttribute("donor", donor);
+    			model.addAttribute("donations", donations);
+    			model.addAttribute("newDonation", newDonation);
+    			return "donor";
+    		}
     		newDonation.setDonor(donor);
     		donationRepository.save(newDonation);
     	}
