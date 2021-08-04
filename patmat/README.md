@@ -7,6 +7,7 @@ App uses default port (8080), Tomcat integrated in Spring Boot and internal H2 d
 Running in Windows:
 
 mvnw package
+
 java -jar -Dfile.encoding=UTF8  target\patmat-0.0.1-SNAPSHOT.jar
 
 Petr Hanč
