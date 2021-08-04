@@ -105,10 +105,7 @@ public class DonorsController {
     
     @PostMapping("edit/{id}")
 	public String editDonor (@PathVariable("id") long id, @Valid Donor donor, BindingResult result, Model model) {
-    	if (result.hasErrors()) {
-            donor.setDonorId(id);
-            return "edit-donor";
-    	}
+    	if (result.hasErrors()) return "edit-donor";
     	if (donor == null) return "redirect:/donors";
     	repository.save(donor);
         model.addAttribute("donors", repository.findAll());
