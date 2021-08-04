@@ -13,8 +13,6 @@ public class PatmatApplication implements CommandLineRunner {
     DonorRepository donorRepository;
     @Autowired
     DonationRepository donationRepository;
-    /*@Autowired
-    DateTimeFormatter dateFormat = DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT); */
 
 	public static void main(String[] args) {
 		SpringApplication.run(PatmatApplication.class, args);
